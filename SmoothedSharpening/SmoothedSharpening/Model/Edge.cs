@@ -8,7 +8,7 @@ namespace SmoothedSharpening
 {
     class Edge
     {
-        public Vertex startPoint { get; set; }
-        public Vertex endPoint { get; set; }
+        public Vector3 startPoint { get; set; }
+        public Vector3 endPoint { get; set; }
     }
 }

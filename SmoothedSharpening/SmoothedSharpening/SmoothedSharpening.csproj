@@ -70,13 +70,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Camera.cs" />
-    <Compile Include="Model\Cube.cs" />
+    <Compile Include="Model\Quaternion.cs" />
+    <Compile Include="Model\Shape.cs" />
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\MathToolkit\MathUtils.cs" />
     <Compile Include="Model\MathToolkit\Rect2D.cs" />
     <Compile Include="Model\Polygon.cs" />
     <Compile Include="Model\Screen.cs" />
-    <Compile Include="Model\Vertex.cs" />
+    <Compile Include="Model\Vector3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

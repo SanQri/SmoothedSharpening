@@ -10,6 +10,8 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="720" Margin="10,10,0,0" VerticalAlignment="Top" Width="1472">
             <Slider Name="zSlider" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="160"/>
             <Slider Name="rSlider" HorizontalAlignment="Left" Margin="-160,40,0,0" VerticalAlignment="Top" Width="160"/>
+            <Slider Name="xSlider" HorizontalAlignment="Left" Margin="-160,70,0,0" VerticalAlignment="Top" Width="160"/>
+            <Slider Name="ySlider" HorizontalAlignment="Left" Margin="-160,100,0,0" VerticalAlignment="Top" Width="160"/>
             <StackPanel Width="1300" Height="720" Name="CanvasPanel">
             </StackPanel>
         </StackPanel>

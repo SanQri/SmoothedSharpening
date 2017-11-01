@@ -21,16 +21,15 @@ namespace SmoothedSharpening
         {
             InitializeComponent();
 
-            var c = new Cube();
-            var v = new Vertex[] {
-                new Vertex { x = 1, y = 1, z = 1 },
-                new Vertex { x = 1, y = 1, z = -1 },
-                new Vertex { x = 1, y = -1, z = 1 },
-                new Vertex { x = 1, y = -1, z = -1 },
-                new Vertex { x = -1, y = 1, z = 1 },
-                new Vertex { x = -1, y = 1, z = -1 },
-                new Vertex { x = -1, y = -1, z = 1 },
-                new Vertex { x = -1, y = -1, z = -1 }
+            var v = new Vector3[] {
+                new Vector3 { x = 1, y = 1, z = 1 },
+                new Vector3 { x = 1, y = 1, z = -1 },
+                new Vector3 { x = 1, y = -1, z = 1 },
+                new Vector3 { x = 1, y = -1, z = -1 },
+                new Vector3 { x = -1, y = 1, z = 1 },
+                new Vector3 { x = -1, y = 1, z = -1 },
+                new Vector3 { x = -1, y = -1, z = 1 },
+                new Vector3 { x = -1, y = -1, z = -1 }
             };
 
             var polygons = new Polygon[] {
@@ -41,20 +40,18 @@ namespace SmoothedSharpening
                 new Polygon(v, new int[] { 4, 6, 7, 5 }),
                 new Polygon(v, new int[] { 3, 7, 6, 2 }),
             };
-            c.polygons = polygons;
-            c.vertecies = v;
-            c.rotate(2);
-            for (var i = 0; i < c.vertecies.Length; i++)
+            var c = new ShapeGeometry(v, polygons);
+            for (var i = 0; i < c.localVerticies.Length; i++)
             {
-                c.rotatedVertecies[i].z = c.rotatedVertecies[i].z + 50;
-                c.rotatedVertecies[i].y = c.rotatedVertecies[i].y + 105;
-                c.rotatedVertecies[i].x = c.rotatedVertecies[i].x + 10;
+                c.worldVerticies[i].z = c.worldVerticies[i].z + 50;
+                c.worldVerticies[i].y = c.worldVerticies[i].y + 105;
+                c.worldVerticies[i].x = c.worldVerticies[i].x + 10;
             }
             var canvas = new DrawingCanvas();
             canvas.Height = 720;
             canvas.Width = 1280;
             canvas.Margin = new Thickness(200, 10, 0, 0);
-            canvas.toRender = c;
+            canvas.shapesToRender.Add(c);
             CanvasPanel.Children.Add(canvas);
             canvas.InvalidateVisual();
 
@@ -67,12 +64,17 @@ namespace SmoothedSharpening
             {
                 c.rotate((float)rSlider.Value);
                 //canvas.camera.screen.z = (float)zSlider.Value * 100;
-                for (var i = 0; i < c.vertecies.Length; i++)
-                {
-                    c.rotatedVertecies[i].z = c.rotatedVertecies[i].z + 50;
-                    c.rotatedVertecies[i].y = c.rotatedVertecies[i].y + 15;
-                    c.rotatedVertecies[i].x = c.rotatedVertecies[i].x + 10;
-                }
+                canvas.InvalidateVisual();
+            };
+            var mult = 5000000;
+            xSlider.ValueChanged += (s, e) =>
+            {
+                c.Center = new Vector3((float)xSlider.Value * mult, (float)ySlider.Value * mult, 50);
+                canvas.InvalidateVisual();
+            };
+            ySlider.ValueChanged += (s, e) =>
+            {
+                c.Center = new Vector3((float)xSlider.Value * mult, (float)ySlider.Value * mult, 50);
                 canvas.InvalidateVisual();
             };
         }

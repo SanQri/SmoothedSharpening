@@ -16,7 +16,7 @@ namespace SmoothedSharpening
         //    new Vertex() { x = }
         //}
 
-        public Point WorldToScreenPoints(Vertex v)
-            => (v * (screen.z / v.z)).toPoint();
+        public Point WorldToScreenPoints(Vector3 v)
+            => (v * (screen.z / v.z) + new Vector3(screen.bounds.width / 2, screen.bounds.height / 2, 0)).toPoint();
     }
 }

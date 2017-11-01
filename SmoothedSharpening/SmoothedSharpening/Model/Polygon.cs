@@ -8,15 +8,15 @@ namespace SmoothedSharpening
 {
     class Polygon
     {
-        public Vertex[] vertecies;
+        public Vector3[] vertecies;
         public Edge[] edges;
         public int[] indexes;
 
-        public Polygon(Vertex[] vertecies, int[] indexes)
+        public Polygon(Vector3[] vertecies, int[] indexes)
         {
             this.indexes = indexes;
             int l = indexes.Length;
-            this.vertecies = new Vertex[l];
+            this.vertecies = new Vector3[l];
             for (int i = 0; i < l; i++)
             {
                 this.vertecies[i] = vertecies[indexes[i]];
