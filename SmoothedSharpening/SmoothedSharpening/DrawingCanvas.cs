@@ -35,11 +35,12 @@ namespace SmoothedSharpening
             {
                 foreach (var p in shape.worldPolygons ?? shape.localPolygons)
                 {
-                    k++;
+                    if (p.GetNormal().dotProfuct(p.vertices[0] + new Vector3(camera.screen.bounds.width / 2, camera.screen.bounds.height / 2, 0)) > 0)
+                        continue;
                     var path = new PathFigure();
-                    path.StartPoint = camera.WorldToScreenPoints(p.vertecies[0].Value);
-                    for (var i = 1; i < p.vertecies.Length; i++)
-                        path.Segments.Add(new LineSegment(camera.WorldToScreenPoints(p.vertecies[i].Value), needToStrokeEdges));
+                    path.StartPoint = camera.WorldToScreenPoints(p.vertices[0].v);
+                    for (var i = 1; i < p.vertices.Length; i++)
+                        path.Segments.Add(new LineSegment(camera.WorldToScreenPoints(p.vertices[i].v), needToStrokeEdges));
                     path.IsClosed = true;
                     var geometry = new PathGeometry();
                     geometry.Figures.Add(path);

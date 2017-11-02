@@ -42,8 +42,11 @@ namespace SmoothedSharpening
         public static Vector3 operator -(Vector3 v, Vector3 v2)
             => new Vector3() { x = v.x - v2.x, y = v.y - v2.y, z = v.z - v2.z };
 
-        public Vector3 dotProfuct(Vector3 v)
-            => new Vector3() { x = x * v.x, y = y * v.y, z = z * v.z };
+        public float dotProfuct(Vector3 v)
+            => x * v.x + y * v.y + z * v.z;
+
+        public Vector3 crossProduct(Vector3 v)
+            => new Vector3() { x = y * v.z - z * v.y, y = x * v.z - z * v.x, z = x * v.y - y * v.x };
 
         public float Abs()
             => (float)Math.Sqrt(x * x + y * y + z * z);

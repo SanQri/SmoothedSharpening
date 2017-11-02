@@ -8,8 +8,8 @@ namespace SmoothedSharpening
 {
     class ShapeGeometry
     {
-        public Ref<Vector3>[] localVerticies { get; set; }
-        public Ref<Vector3>[] worldVerticies { get; set; }
+        public Ref<Vector3>[] localVertices { get; set; }
+        public Ref<Vector3>[] worldVertices { get; set; }
         //public Edge[] edges { get; set; }
         //public Edge[] rotatedEdges { get; set; }
         public Polygon[] localPolygons { get; set; }
@@ -17,19 +17,19 @@ namespace SmoothedSharpening
 
         public ShapeGeometry(Ref<Vector3>[] vertecies, Polygon[] polygons)
         {
-            localVerticies = vertecies;
-            worldVerticies = new Ref<Vector3>[vertecies.Length];
-            Array.Copy(vertecies, worldVerticies, vertecies.Length);
+            localVertices = vertecies;
+            worldVertices = new Ref<Vector3>[vertecies.Length];
+            Array.Copy(vertecies, worldVertices, vertecies.Length);
             localPolygons = polygons;
             worldPolygons = new Polygon[polygons.Length];
             Array.Copy(polygons, worldPolygons, polygons.Length);
 
             Vector3 c = new Vector3();
-            foreach (var v in worldVerticies)
+            foreach (var v in worldVertices)
             {
-                c += v.Value;
+                c += v.v;
             }
-            c /= worldVerticies.Length;
+            c /= worldVertices.Length;
             Center = c;
         }
 
@@ -44,9 +44,9 @@ namespace SmoothedSharpening
                 else
                 {
                     var diff = value - _center;
-                    for (int i = 0; i < worldVerticies.Length; i++)
+                    for (int i = 0; i < worldVertices.Length; i++)
                     {
-                        worldVerticies[i].Value += diff;
+                        worldVertices[i].v += diff;
                     }
                     _center = value;
                 }
@@ -59,31 +59,35 @@ namespace SmoothedSharpening
             set
             {
                 var diff = new Vector3() { x = value.x / _scale.x, y = value.y / _scale.y, z = value.z / _scale.z };
-                for (int i = 0; i < localVerticies.Length; i++)
-                    localVerticies[i].Value = localVerticies[i].Value.dotProfuct(diff);
+                for (int i = 0; i < localVertices.Length; i++)
+                {
+                    localVertices[i].v.x *= diff.x;
+                    localVertices[i].v.y *= diff.y;
+                    localVertices[i].v.z *= diff.z;
+                }
             }
         }
 
         public void rotate(float deg)
         {
             worldPolygons = new Polygon[localPolygons.Length];
-            worldVerticies = new Ref<Vector3>[localVerticies.Length];
+            worldVertices = new Ref<Vector3>[localVertices.Length];
 
             float sin = (float)Math.Sin(deg);
             float cos = (float)Math.Cos(deg);
 
-            for (int i = 0; i < localVerticies.Length; i++)
-                worldVerticies[i] = new Ref<Vector3>()
+            for (int i = 0; i < localVertices.Length; i++)
+                worldVertices[i] = new Ref<Vector3>()
                 {
-                    Value = new Vector3()
+                    v = new Vector3()
                     {
-                        x = cos * localVerticies[i].Value.x + sin * localVerticies[i].Value.z,
-                        y = localVerticies[i].Value.y,
-                        z = -sin * localVerticies[i].Value.x + cos * localVerticies[i].Value.z
+                        x = cos * localVertices[i].v.x + sin * localVertices[i].v.z,
+                        y = localVertices[i].v.y,
+                        z = -sin * localVertices[i].v.x + cos * localVertices[i].v.z
                     }
                 };
             for(int i = 0; i < localPolygons.Length; i++)
-                worldPolygons[i] = new Polygon(worldVerticies, localPolygons[i].indexes);
+                worldPolygons[i] = new Polygon(worldVertices, localPolygons[i].indexes);
         }
         
     }

@@ -22,21 +22,21 @@ namespace SmoothedSharpening
             InitializeComponent();
 
             var v = new Ref<Vector3>[] {
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = -1, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = -1, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 1, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 1, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = -1, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = -1, z = -1 } }
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 1, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 1, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = -1, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = -1, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 1, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 1, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = -1, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = -1, z = -1 } }
             };
 
             var v1 = new Ref<Vector3>[] {
-                new Ref<Vector3> () { Value = new Vector3 { x = 0, y = 2, z = 0 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 0, z = 0.5f } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 0, z = 0.5f } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 0, y = 0, z = -1 } }
+                new Ref<Vector3> () { v = new Vector3 { x = 0, y = 2, z = 0 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 0, z = 0.5f } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 0, z = 0.5f } },
+                new Ref<Vector3> () { v = new Vector3 { x = 0, y = 0, z = -1 } }
             };
             var polygons1 = new Polygon[] {
                 new Polygon(v1, new int[] { 0, 1, 2 }),
@@ -46,28 +46,28 @@ namespace SmoothedSharpening
             };
 
             var v2 = new Ref<Vector3>[] {
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 0, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 3, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 3, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 0, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 0, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 0, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 1.5f, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1.5f, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 3, z = 1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 3, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1.5f, z = -1 } },
-                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 1.5f, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 0, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 3, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 3, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = -1, y = 0, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 2, y = 0, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 2, y = 0, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 2, y = 1.5f, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 1.5f, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 3, z = 1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 3, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 1, y = 1.5f, z = -1 } },
+                new Ref<Vector3> () { v = new Vector3 { x = 2, y = 1.5f, z = -1 } },
             };
             var polygons2 = new Polygon[] {
-                new Polygon(v2, new int[] { 0, 1, 8, 7, 6, 5 }),
+                new Polygon(v2, new int[] { 8, 9, 2, 1 }),
+                new Polygon(v2, new int[] { 10, 7, 6, 11 }),
+                new Polygon(v2, new int[] { 9, 8, 7, 10 }),
                 new Polygon(v2, new int[] { 0, 1, 2, 3 }),
-                new Polygon(v2, new int[] { 0, 5, 4, 3 }),
-                new Polygon(v2, new int[] { 4, 5, 6, 11 }),
-                new Polygon(v2, new int[] { 11, 6, 7, 10 }),
-                new Polygon(v2, new int[] { 10, 7, 8, 9 }),
-                new Polygon(v2, new int[] { 1, 2, 9, 8 }),
                 new Polygon(v2, new int[] { 2, 9, 10, 11, 4, 3 }),
+                new Polygon(v2, new int[] { 0, 5, 4, 3 }),
+                new Polygon(v2, new int[] { 5, 6, 7, 8, 1, 0 }),
+                new Polygon(v2, new int[] { 4, 5, 6, 11 }),
             };
 
 
@@ -126,6 +126,11 @@ namespace SmoothedSharpening
 
     public class Ref<T>
     {
-        public T Value { get; set; }
+        public T v { get; set; }
+
+        public static implicit operator T(Ref<T> r) => r.v;
+
+        public static implicit operator Ref<T>(T v) => new Ref<T>() { v = v }; 
+                
     }
 }
