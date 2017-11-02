@@ -8,15 +8,15 @@ namespace SmoothedSharpening
 {
     class Polygon
     {
-        public Vector3[] vertecies;
+        public Ref<Vector3>[] vertecies;
         public Edge[] edges;
         public int[] indexes;
 
-        public Polygon(Vector3[] vertecies, int[] indexes)
+        public Polygon(Ref<Vector3>[] vertecies, int[] indexes)
         {
             this.indexes = indexes;
             int l = indexes.Length;
-            this.vertecies = new Vector3[l];
+            this.vertecies = new Ref<Vector3>[l];
             for (int i = 0; i < l; i++)
             {
                 this.vertecies[i] = vertecies[indexes[i]];
@@ -24,9 +24,9 @@ namespace SmoothedSharpening
             edges = new Edge[l];
             for(int i = 0; i < l - 1; i++)
             {
-                edges[i] = new Edge { startPoint = this.vertecies[i], endPoint = this.vertecies[i + 1] };
+                edges[i] = new Edge { startPoint = this.vertecies[i].Value, endPoint = this.vertecies[i + 1].Value };
             }
-            edges[l - 1] = new Edge { startPoint = this.vertecies[l - 1], endPoint = this.vertecies[0] };
+            edges[l - 1] = new Edge { startPoint = this.vertecies[l - 1].Value, endPoint = this.vertecies[0].Value };
         }
     }
 }

@@ -37,9 +37,9 @@ namespace SmoothedSharpening
                 {
                     k++;
                     var path = new PathFigure();
-                    path.StartPoint = camera.WorldToScreenPoints(p.vertecies[0]);
+                    path.StartPoint = camera.WorldToScreenPoints(p.vertecies[0].Value);
                     for (var i = 1; i < p.vertecies.Length; i++)
-                        path.Segments.Add(new LineSegment(camera.WorldToScreenPoints(p.vertecies[i]), needToStrokeEdges));
+                        path.Segments.Add(new LineSegment(camera.WorldToScreenPoints(p.vertecies[i].Value), needToStrokeEdges));
                     path.IsClosed = true;
                     var geometry = new PathGeometry();
                     geometry.Figures.Add(path);

@@ -21,16 +21,55 @@ namespace SmoothedSharpening
         {
             InitializeComponent();
 
-            var v = new Vector3[] {
-                new Vector3 { x = 1, y = 1, z = 1 },
-                new Vector3 { x = 1, y = 1, z = -1 },
-                new Vector3 { x = 1, y = -1, z = 1 },
-                new Vector3 { x = 1, y = -1, z = -1 },
-                new Vector3 { x = -1, y = 1, z = 1 },
-                new Vector3 { x = -1, y = 1, z = -1 },
-                new Vector3 { x = -1, y = -1, z = 1 },
-                new Vector3 { x = -1, y = -1, z = -1 }
+            var v = new Ref<Vector3>[] {
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = -1, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = -1, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 1, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 1, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = -1, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = -1, z = -1 } }
             };
+
+            var v1 = new Ref<Vector3>[] {
+                new Ref<Vector3> () { Value = new Vector3 { x = 0, y = 2, z = 0 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 0, z = 0.5f } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 0, z = 0.5f } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 0, y = 0, z = -1 } }
+            };
+            var polygons1 = new Polygon[] {
+                new Polygon(v1, new int[] { 0, 1, 2 }),
+                new Polygon(v1, new int[] { 0, 2, 3 }),
+                new Polygon(v1, new int[] { 0, 1, 3 }),
+                new Polygon(v1, new int[] { 1, 2, 3 })
+            };
+
+            var v2 = new Ref<Vector3>[] {
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 0, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 3, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 3, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = -1, y = 0, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 0, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 0, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 1.5f, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1.5f, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 3, z = 1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 3, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 1, y = 1.5f, z = -1 } },
+                new Ref<Vector3> () { Value = new Vector3 { x = 2, y = 1.5f, z = -1 } },
+            };
+            var polygons2 = new Polygon[] {
+                new Polygon(v2, new int[] { 0, 1, 8, 7, 6, 5 }),
+                new Polygon(v2, new int[] { 0, 1, 2, 3 }),
+                new Polygon(v2, new int[] { 0, 5, 4, 3 }),
+                new Polygon(v2, new int[] { 4, 5, 6, 11 }),
+                new Polygon(v2, new int[] { 11, 6, 7, 10 }),
+                new Polygon(v2, new int[] { 10, 7, 8, 9 }),
+                new Polygon(v2, new int[] { 1, 2, 9, 8 }),
+                new Polygon(v2, new int[] { 2, 9, 10, 11, 4, 3 }),
+            };
+
 
             var polygons = new Polygon[] {
                 new Polygon(v, new int[] { 0, 2, 6, 4 }),
@@ -41,17 +80,22 @@ namespace SmoothedSharpening
                 new Polygon(v, new int[] { 3, 7, 6, 2 }),
             };
             var c = new ShapeGeometry(v, polygons);
-            for (var i = 0; i < c.localVerticies.Length; i++)
-            {
-                c.worldVerticies[i].z = c.worldVerticies[i].z + 50;
-                c.worldVerticies[i].y = c.worldVerticies[i].y + 105;
-                c.worldVerticies[i].x = c.worldVerticies[i].x + 10;
-            }
+            var c1 = new ShapeGeometry(v1, polygons1);
+            var c2 = new ShapeGeometry(v2, polygons2);
+            //for (var i = 0; i < c.localVerticies.Length; i++)
+            //{
+            //    c.worldVerticies[i].Value.z = c.worldVerticies[i].Value.z + 50;
+            //    c.worldVerticies[i].Value.y = c.worldVerticies[i].Value.y + 105;
+            //    c.worldVerticies[i].Value.x = c.worldVerticies[i].Value.x + 10;
+            //}
+            c.Scale = new Vector3(2, 2, 2);
             var canvas = new DrawingCanvas();
             canvas.Height = 720;
             canvas.Width = 1280;
             canvas.Margin = new Thickness(200, 10, 0, 0);
-            canvas.shapesToRender.Add(c);
+            //canvas.shapesToRender.Add(c);
+            //canvas.shapesToRender.Add(c1);
+            canvas.shapesToRender.Add(c2);
             CanvasPanel.Children.Add(canvas);
             canvas.InvalidateVisual();
 
@@ -62,21 +106,26 @@ namespace SmoothedSharpening
             };
             rSlider.ValueChanged += (s, e) =>
             {
-                c.rotate((float)rSlider.Value);
+                c2.rotate((float)rSlider.Value);
                 //canvas.camera.screen.z = (float)zSlider.Value * 100;
                 canvas.InvalidateVisual();
             };
-            var mult = 5000000;
+            var mult = 10;
             xSlider.ValueChanged += (s, e) =>
             {
-                c.Center = new Vector3((float)xSlider.Value * mult, (float)ySlider.Value * mult, 50);
+                c2.Center = new Vector3((float)xSlider.Value * mult-20, (float)ySlider.Value * mult-20, 5);
                 canvas.InvalidateVisual();
             };
             ySlider.ValueChanged += (s, e) =>
             {
-                c.Center = new Vector3((float)xSlider.Value * mult, (float)ySlider.Value * mult, 50);
+                c2.Center = new Vector3((float)xSlider.Value * mult-20, (float)ySlider.Value * mult-20, 5);
                 canvas.InvalidateVisual();
             };
         }
+    }
+
+    public class Ref<T>
+    {
+        public T Value { get; set; }
     }
 }
