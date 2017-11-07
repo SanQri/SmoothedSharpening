@@ -25,7 +25,7 @@ namespace SmoothedSharpening
 
         static Color color = Color.FromRgb(200, 160, 50);
 
-        bool needToStrokeEdges = false;
+        bool needToStrokeEdges = true;
 
         protected override void OnRender(DrawingContext dc)
         {
@@ -33,9 +33,10 @@ namespace SmoothedSharpening
             var r = new Random();
             foreach (var shape in shapesToRender)
             {
-                foreach (var p in shape.worldPolygons ?? shape.localPolygons)
+                foreach (var p in shape.TransformedPolygons() ?? shape.localPolygons)
                 {
-                    if (p.GetNormal().dotProfuct(p.vertices[0] + new Vector3(camera.screen.bounds.width / 2, camera.screen.bounds.height / 2, 0)) > 0)
+                    //if (p.GetNormal().dotProfuct(p.vertices[0] + new Vector3(camera.screen.bounds.width / 2, camera.screen.bounds.height / 2, 0)) > 0)
+                    if (p.GetNormal().dotProfuct(p.vertices[0]) > 0)
                         continue;
                     var path = new PathFigure();
                     path.StartPoint = camera.WorldToScreenPoints(p.vertices[0].v);
@@ -45,7 +46,8 @@ namespace SmoothedSharpening
                     var geometry = new PathGeometry();
                     geometry.Figures.Add(path);
                     var c = Color.FromRgb((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255));
-                    dc.DrawGeometry(new SolidColorBrush(c), new Pen(), geometry);
+                    var c2 = Color.FromRgb((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255));
+                    dc.DrawGeometry(new SolidColorBrush(p.color), new Pen(new SolidColorBrush(Color.FromRgb(40,40,40)), 1), geometry);
                 }
             }
         }

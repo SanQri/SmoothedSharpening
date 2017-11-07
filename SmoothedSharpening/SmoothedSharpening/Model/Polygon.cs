@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SmoothedSharpening
 {
@@ -11,9 +12,12 @@ namespace SmoothedSharpening
         public Ref<Vector3>[] vertices;
         public Edge[] edges;
         public int[] indexes;
+        public Color color;
 
         public Polygon(Ref<Vector3>[] vertecies, int[] indexes)
         {
+            Random o = new Random();
+            color = Color.FromRgb((byte)o.Next(255), (byte)o.Next(255), (byte)o.Next(255));
             this.indexes = indexes;
             int l = indexes.Length;
             this.vertices = new Ref<Vector3>[l];
@@ -27,6 +31,15 @@ namespace SmoothedSharpening
                 edges[i] = new Edge { startPoint = this.vertices[i].v, endPoint = this.vertices[i + 1].v };
             }
             edges[l - 1] = new Edge { startPoint = this.vertices[l - 1].v, endPoint = this.vertices[0].v };
+        }
+
+        public Vector3 GetCenter()
+        {
+            var c = new Vector3();
+            foreach (var v in vertices)
+                c += v;
+            c /= vertices.Length;
+            return c;
         }
 
         public Vector3 GetNormal()

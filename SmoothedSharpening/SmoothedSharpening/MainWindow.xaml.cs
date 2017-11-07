@@ -60,14 +60,14 @@ namespace SmoothedSharpening
                 new Ref<Vector3> () { v = new Vector3 { x = 2, y = 1.5f, z = -1 } },
             };
             var polygons2 = new Polygon[] {
-                new Polygon(v2, new int[] { 8, 9, 2, 1 }),
-                new Polygon(v2, new int[] { 10, 7, 6, 11 }),
-                new Polygon(v2, new int[] { 9, 8, 7, 10 }),
-                new Polygon(v2, new int[] { 0, 1, 2, 3 }),
+                new Polygon(v2, (new int[] { 8, 9, 2, 1 }).Reverse().ToArray()),
+                new Polygon(v2, (new int[] { 10, 7, 6, 11 }).Reverse().ToArray()),
+                new Polygon(v2, (new int[] { 9, 8, 7, 10 })),
+                new Polygon(v2, (new int[] { 0, 1, 2, 3 })),
                 new Polygon(v2, new int[] { 2, 9, 10, 11, 4, 3 }),
                 new Polygon(v2, new int[] { 0, 5, 4, 3 }),
                 new Polygon(v2, new int[] { 5, 6, 7, 8, 1, 0 }),
-                new Polygon(v2, new int[] { 4, 5, 6, 11 }),
+                new Polygon(v2, (new int[] { 4, 5, 6, 11 }).Reverse().ToArray()),
             };
 
 
@@ -88,7 +88,7 @@ namespace SmoothedSharpening
             //    c.worldVerticies[i].Value.y = c.worldVerticies[i].Value.y + 105;
             //    c.worldVerticies[i].Value.x = c.worldVerticies[i].Value.x + 10;
             //}
-            c.Scale = new Vector3(2, 2, 2);
+            c2.Scale = new Vector3(1, 1, 0.3f);
             var canvas = new DrawingCanvas();
             canvas.Height = 720;
             canvas.Width = 1280;
@@ -118,7 +118,12 @@ namespace SmoothedSharpening
             };
             ySlider.ValueChanged += (s, e) =>
             {
-                c2.Center = new Vector3((float)xSlider.Value * mult-20, (float)ySlider.Value * mult-20, 5);
+                c2.Center = new Vector3((float)xSlider.Value * mult - 20, (float)ySlider.Value * mult - 20, 5);
+                canvas.InvalidateVisual();
+            };
+            sSlider.ValueChanged += (s, e) =>
+            {
+                c2.Scale = new Vector3((float)sSlider.Value + 0.1f, (float)sSlider.Value + 0.1f, (float)sSlider.Value + 0.1f);
                 canvas.InvalidateVisual();
             };
         }

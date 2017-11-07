@@ -12,6 +12,7 @@
             <Slider Name="rSlider" HorizontalAlignment="Left" Margin="-160,40,0,0" VerticalAlignment="Top" Width="160"/>
             <Slider Name="xSlider" HorizontalAlignment="Left" Margin="-160,70,0,0" VerticalAlignment="Top" Width="160"/>
             <Slider Name="ySlider" HorizontalAlignment="Left" Margin="-160,100,0,0" VerticalAlignment="Top" Width="160"/>
+            <Slider Name="sSlider" HorizontalAlignment="Left" Margin="-160,130,0,0" VerticalAlignment="Top" Width="160"/>
             <StackPanel Width="1300" Height="720" Name="CanvasPanel">
             </StackPanel>
         </StackPanel>

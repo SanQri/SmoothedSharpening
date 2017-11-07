@@ -14,15 +14,22 @@ namespace SmoothedSharpening
         //public Edge[] rotatedEdges { get; set; }
         public Polygon[] localPolygons { get; set; }
         public Polygon[] worldPolygons { get; set; }
+        
+        public Quaternion rotationQ { get; set; }
 
         public ShapeGeometry(Ref<Vector3>[] vertecies, Polygon[] polygons)
         {
             localVertices = vertecies;
             worldVertices = new Ref<Vector3>[vertecies.Length];
-            Array.Copy(vertecies, worldVertices, vertecies.Length);
             localPolygons = polygons;
             worldPolygons = new Polygon[polygons.Length];
-            Array.Copy(polygons, worldPolygons, polygons.Length);
+            for (int i = 0; i < vertecies.Length; i++)
+                worldVertices[i] = new Ref<Vector3>() { v = new Vector3(vertecies[i].v) };
+            for (int i = 0; i < worldPolygons.Length; i++)
+            {
+                worldPolygons[i] = new Polygon(worldVertices, polygons[i].indexes);
+                //Array.Copy(polygons[i].indexes, worldPolygons[i].indexes, polygons[i].indexes.Length);
+            }
 
             Vector3 c = new Vector3();
             foreach (var v in worldVertices)
@@ -51,6 +58,10 @@ namespace SmoothedSharpening
                     _center = value;
                 }
             }
+            get
+            {
+                return _center;
+            }
         }
 
         Vector3 _scale = new Vector3() { x = 1, y = 1, z = 1 };
@@ -65,7 +76,27 @@ namespace SmoothedSharpening
                     localVertices[i].v.y *= diff.y;
                     localVertices[i].v.z *= diff.z;
                 }
+                _scale = value;
             }
+            get
+            {
+                return _scale;
+            }
+        }
+
+        public void rotateAround(float rad, Vector3 axis)
+        {
+            var q = new Quaternion();
+        }
+
+        public Polygon[] TransformedPolygons()
+        {
+            for(int i = 0; i < localVertices.Length; i++)
+            {
+                worldVertices[i].v = localVertices[i] + _center;
+            }
+            Array.Sort(worldPolygons, new Comparison<Polygon>((p1, p2) => p2.GetCenter().SqrAbs().CompareTo(p1.GetCenter().SqrAbs())));
+            return worldPolygons;
         }
 
         public void rotate(float deg)
