@@ -17,6 +17,9 @@ namespace SmoothedSharpening
 {
     public partial class MainWindow : Window
     {
+        DrawingBitmapManager bitmapManager = new DrawingBitmapManager();
+        Image image = new Image();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -90,42 +93,68 @@ namespace SmoothedSharpening
             //}
             c2.Scale = new Vector3(1, 1, 0.3f);
             var canvas = new DrawingCanvas();
+            image.Height = 720;
+            image.Width = 1280;
+            image.Margin = new Thickness(200, 10, 0, 0);
             canvas.Height = 720;
             canvas.Width = 1280;
             canvas.Margin = new Thickness(200, 10, 0, 0);
             //canvas.shapesToRender.Add(c);
             //canvas.shapesToRender.Add(c1);
             canvas.shapesToRender.Add(c2);
-            CanvasPanel.Children.Add(canvas);
-            canvas.InvalidateVisual();
+            //CanvasPanel.Children.Add(canvas);
+            CanvasPanel.Children.Add(image);
+
+            var p1 = new PointLight();
+            var p2 = new PointLight();
+            p1.position = new Vector3(10, 2, 1);
+            p2.position = new Vector3(-8, -3, 1);
+            p1.range = 20 * 20;
+            p2.range = 30 * 30;
+            p1.intensity = 2;
+            p2.intensity = 5;
+            bitmapManager.lights = new PointLight[] { p1, p2 };
 
             zSlider.ValueChanged += (s, e) =>
             {
                 canvas.camera.screen.z = (float)zSlider.Value * 100;
-                canvas.InvalidateVisual();
+                p2.intensity = (float)zSlider.Value * 5;
+                Redraw();
             };
             rSlider.ValueChanged += (s, e) =>
             {
                 c2.rotate((float)rSlider.Value);
                 //canvas.camera.screen.z = (float)zSlider.Value * 100;
-                canvas.InvalidateVisual();
+                Redraw();
             };
             var mult = 10;
             xSlider.ValueChanged += (s, e) =>
             {
                 c2.Center = new Vector3((float)xSlider.Value * mult-20, (float)ySlider.Value * mult-20, 5);
-                canvas.InvalidateVisual();
+                Redraw();
             };
             ySlider.ValueChanged += (s, e) =>
             {
                 c2.Center = new Vector3((float)xSlider.Value * mult - 20, (float)ySlider.Value * mult - 20, 5);
-                canvas.InvalidateVisual();
+                Redraw();
             };
             sSlider.ValueChanged += (s, e) =>
             {
                 c2.Scale = new Vector3((float)sSlider.Value + 0.1f, (float)sSlider.Value + 0.1f, (float)sSlider.Value + 0.1f);
-                canvas.InvalidateVisual();
+                Redraw();
             };
+            
+            bitmapManager.shapesToRender.Add(c2);
+            Redraw();
+        }
+
+        void Redraw()
+        {
+            unsafe
+            {
+                bitmapManager.Draw();
+                image.Source = bitmapManager.bitmap;
+            }
         }
     }
 

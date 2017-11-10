@@ -13,6 +13,7 @@ namespace SmoothedSharpening
         public Edge[] edges;
         public int[] indexes;
         public Color color;
+        public float[] lightAtIndex;
 
         public Polygon(Ref<Vector3>[] vertecies, int[] indexes)
         {
