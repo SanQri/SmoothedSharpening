@@ -58,7 +58,8 @@ namespace SmoothedSharpening
         {
             ClearData();
             var t = shapesToRender;
-            for (int i = 0; i < shapesToRender.Count; i++)
+            int l = shapesToRender.Count;
+            for (int i = 0; i < l; i++)
                 DrawShape(shapesToRender[i]);
             Int32Rect rect = new Int32Rect(0, 0, bitmapWidth, bitmapHeight);
             int stride = 3 * bitmapWidth;
@@ -87,6 +88,7 @@ namespace SmoothedSharpening
             int vCount = p.vertices.Length;
             float[] py = new float[vCount];
             float[] px = new float[vCount];
+            Edge[] edges = new Edge[vCount];
 
             for (var i = 0; i < p.vertices.Length; i++)
             {
@@ -112,14 +114,61 @@ namespace SmoothedSharpening
 
             var bx2 = Math.Min((int)bounds.x2, bitmapWidth);
             var by2 = Math.Min((int)bounds.y2, bitmapHeight);
-            for (int x = Math.Max((int)bounds.x, 0); x < bx2; x++)
+            var minX = Math.Max((int)bounds.x, 0);
+            int l = p.vertices.Length;
+            for (int y = Math.Max((int)bounds.y, 0); y < by2; y++)
             {
-                for (int y = Math.Max((int)bounds.y, 0); y < by2; y++)
+                int c = 0;
+                float[] intersectionX = new float[l];
+                //float[] intersectionY = new float[l];
+                int t = vCount - 1;
+                for (int i = 0, j = t; i < vCount; j = i++)
                 {
-                    if (CountIntersections(px, py, x, y, vCount) % 2 == 0)
+                    float k, b;
+                    float xi;
+                    if (!((y >= py[i] && y <= py[j]) || (y >= py[j] && y <= py[i])))
                         continue;
-                    DrawPixel(x, y, normal, D);
+                    if (px[i] == px[j])
+                        xi = px[i];
+                    else
+                    {
+                        k = (py[i] - py[j]) / (px[i] - px[j]);
+                        b = py[i] - k * px[i];
+                        if (k == 0)
+                            continue;
+                        xi = (y - b) / k;
+                    }
+                    if(xi >= minX)
+                        intersectionX[c++] = xi;
                 }
+                
+                for (int i = 1; i < c; i++)
+                {
+                    var j = i;
+                    while (j > 0 && intersectionX[j - 1] > intersectionX[j])
+                    {
+                        var tmp = intersectionX[j];
+                        intersectionX[j] = intersectionX[j - 1];
+                        intersectionX[j-- - 1] = tmp;
+                    }
+                }
+                var sdff = 2 + 2;
+                //for (int i = 0; i < vCount; i++)
+                //{
+
+                //    var xI = edges[i].IntersectionXAtY(y);
+                //    if (xI >= edges[i].startPoint.v.x && xI <= edges[i].endPoint.v.x)
+                //        intersectionX[c++] = xI;
+                //}
+                for (int i = 0; i < c; i += 2)
+                    for(int x = (int)intersectionX[i]; x < (int)intersectionX[i + 1]; x++)
+                        DrawPixel(x, y, normal, D);
+                //for (int x = Math.Max((int)bounds.x, 0); x < bx2; x++)
+                //{
+                //    if (CountIntersections(px, py, x, y, vCount) % 2 == 0)
+                //        continue;
+                //    DrawPixel(x, y, normal, D);
+                //}
             }
         }
 
@@ -129,9 +178,9 @@ namespace SmoothedSharpening
             var t = (y * bitmapWidth + x) * 3;
             if (t >= 0 && t < bitmapWidth * bitmapHeight * 3)
             {
-                imageByteData[t] = (byte)(B * lightC);
-                imageByteData[t + 1] = (byte)(G * lightC);
-                imageByteData[t + 2] = (byte)(R * lightC);
+                imageByteData[t] = (byte)Math.Min(B * lightC, 255);
+                imageByteData[t + 1] = (byte)Math.Min(G * lightC, 255);
+                imageByteData[t + 2] = (byte)Math.Min(R * lightC, 255);
                 //imageByteData[t] = p.color.B;
                 //imageByteData[t + 1] = p.color.R;
                 //imageByteData[t + 2] = p.color.G;
@@ -153,7 +202,8 @@ namespace SmoothedSharpening
         float GetLightC(int x, int y, Vector3 normal, float D)
         {
             float lightC = 0;
-            for(int i = 0; i < lights.Length; i++)
+            int l = lights.Length;
+            for(int i = 0; i < l; i++)
             {
                 var tVector = new Vector3(x * invertionCameraZ, y * invertionCameraZ, cameraZ);
                 var alpha = tVector.dotProfuct(normal) / D;
@@ -164,7 +214,7 @@ namespace SmoothedSharpening
                 float d = lights[i].position.SqrMagnitude(tVector);
                 float r = lights[i].range;
                 if (r > d)
-                    lightC += lights[i].intensity * (r - d) / r;
+                    lightC += (float)(lights[i].intensity * (Math.Pow(r, 0.25) - Math.Pow(d, 0.25)) / Math.Pow(r, 0.25));
             }
             return lightC;
         }

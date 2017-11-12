@@ -29,9 +29,9 @@ namespace SmoothedSharpening
             edges = new Edge[l];
             for(int i = 0; i < l - 1; i++)
             {
-                edges[i] = new Edge { startPoint = this.vertices[i].v, endPoint = this.vertices[i + 1].v };
+                edges[i] = new Edge(vertices[i], vertices[i + 1]);
             }
-            edges[l - 1] = new Edge { startPoint = this.vertices[l - 1].v, endPoint = this.vertices[0].v };
+            edges[l - 1] = new Edge(vertices[l - 1], vertices[0]);
         }
 
         public Vector3 GetCenter()
